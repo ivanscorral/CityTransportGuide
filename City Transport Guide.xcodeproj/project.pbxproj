@@ -21,6 +21,7 @@
 		0D66215C29E6289400C51043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66215B29E6289400C51043 /* Constants.swift */; };
 		0D66215E29E628A100C51043 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66215D29E628A100C51043 /* Extensions.swift */; };
 		0D66216029E628C100C51043 /* TransportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66215F29E628C100C51043 /* TransportView.swift */; };
+		51405B11D4F6C17B246FC53C /* Pods_City_Transport_Guide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E21467DC75BEF92C1D960C /* Pods_City_Transport_Guide.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,9 @@
 		0D66215B29E6289400C51043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0D66215D29E628A100C51043 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0D66215F29E628C100C51043 /* TransportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportView.swift; sourceTree = "<group>"; };
+		1E6E7BD44DE9552E59A50A6A /* Pods-City Transport Guide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-City Transport Guide.release.xcconfig"; path = "Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide.release.xcconfig"; sourceTree = "<group>"; };
+		D9E21467DC75BEF92C1D960C /* Pods_City_Transport_Guide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_City_Transport_Guide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16E4EE0230ACAA976FBA1DA /* Pods-City Transport Guide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-City Transport Guide.debug.xcconfig"; path = "Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51405B11D4F6C17B246FC53C /* Pods_City_Transport_Guide.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +63,8 @@
 			children = (
 				0D66213329E6267E00C51043 /* City Transport Guide */,
 				0D66213229E6267E00C51043 /* Products */,
+				D09398797CB2CC242661CA4F /* Pods */,
+				3DEBE4959FE6E32A605F36E4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +146,23 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3DEBE4959FE6E32A605F36E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9E21467DC75BEF92C1D960C /* Pods_City_Transport_Guide.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D09398797CB2CC242661CA4F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E16E4EE0230ACAA976FBA1DA /* Pods-City Transport Guide.debug.xcconfig */,
+				1E6E7BD44DE9552E59A50A6A /* Pods-City Transport Guide.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,9 +170,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D66214829E6267F00C51043 /* Build configuration list for PBXNativeTarget "City Transport Guide" */;
 			buildPhases = (
+				99117EE28DD508FE7228DB74 /* [CP] Check Pods Manifest.lock */,
 				0D66212D29E6267E00C51043 /* Sources */,
 				0D66212E29E6267E00C51043 /* Frameworks */,
 				0D66212F29E6267E00C51043 /* Resources */,
+				E64B74486DF37C7E6C13C5A0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,6 +230,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		99117EE28DD508FE7228DB74 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-City Transport Guide-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E64B74486DF37C7E6C13C5A0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0D66212D29E6267E00C51043 /* Sources */ = {
@@ -362,6 +430,7 @@
 		};
 		0D66214929E6267F00C51043 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E16E4EE0230ACAA976FBA1DA /* Pods-City Transport Guide.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -380,7 +449,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.ivykoko1..City-Transport-Guide";
+				PRODUCT_BUNDLE_IDENTIFIER = net.ivykoko1.CityTransportGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -390,6 +459,7 @@
 		};
 		0D66214A29E6267F00C51043 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E6E7BD44DE9552E59A50A6A /* Pods-City Transport Guide.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -408,7 +478,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.ivykoko1..City-Transport-Guide";
+				PRODUCT_BUNDLE_IDENTIFIER = net.ivykoko1.CityTransportGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

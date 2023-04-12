@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import GoogleMaps
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if let apiKey = Bundle.main.object(forInfoDictionaryKey: "Google Maps SDK for iOS") as? String {
+            GMSServices.provideAPIKey(apiKey)
+            print("Loaded Google Maps API key from Info.plist")
+        } else {
+            print("Failed to load Google Maps API key from Info.plist")
+        }
+        
         return true
     }
 
