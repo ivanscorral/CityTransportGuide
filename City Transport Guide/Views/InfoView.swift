@@ -55,4 +55,7 @@ class InfoView: UIView {
             }
         }
     }
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: 200, height: 100) // Set the desired size for your InfoView
+    }
 }

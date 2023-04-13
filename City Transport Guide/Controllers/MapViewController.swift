@@ -6,33 +6,32 @@
 
 import UIKit
 import GoogleMaps
+import MapKit
 
 class MapViewController: UIViewController {
     private var mapView: GMSMapView!
     private var viewModel: MapViewModel!
-    
+    let lisboaLatitude = 38.725299
+    let lisboaLongitude = -9.150036
+    let initialLowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096) // Coordenadas indicadas en el test
+    let initialUpperRightLatLon = CLLocationCoordinate2D(latitude: 38.739429, longitude: -9.137115)
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = MapViewModel()
         setupMapView()
-        let lowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096) // Ini
-        let upperRightLatLon = CLLocationCoordinate2D(latitude: 38.739429, longitude: -9.137115)
-        fetchData(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon)
+        fetchData(lowerLeftLatLon: initialLowerLeftLatLon, upperRightLatLon: initialUpperRightLatLon)
     }
     
     private func setupMapView() {
-        let lisboaLatitude = 38.725299
-        let lisboaLongitude = -9.150036
-        let camera = GMSCameraPosition.camera(withLatitude: lisboaLatitude, longitude: lisboaLongitude, zoom: 16)
         
+        let camera = GMSCameraPosition.camera(withLatitude: lisboaLatitude, longitude: lisboaLongitude, zoom: 17.4)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
+        mapView.delegate = self
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.settings.compassButton = true
-        mapView.delegate = self
-        mapView.setMinZoom(12, maxZoom: 17.5) // Limit zoom inoutrange
+        mapView.setMinZoom(15.75, maxZoom: 18.5) // Limit zoom inoutrange
         view.addSubview(mapView)
     }
-    
     
     func fetchData(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D) {
         viewModel.getResources(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
@@ -52,12 +51,10 @@ class MapViewController: UIViewController {
                     self.displayErrorAlert(errorMessage: errorMessage)
                 } else {
                     self.displayErrorAlert(errorMessage: "\(error.localizedDescription), Error: \(error.asAFError?.responseCode ?? -1)")
-                    print()
                 }
             }
         }
     }
-    
     
     func displayErrorAlert(errorMessage: String) {
         let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
@@ -67,9 +64,7 @@ class MapViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
-    
 }
-
 extension MapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         let newLowerLeftLatLon = CLLocationCoordinate2D(latitude: position.target.latitude - 0.014191, longitude: position.target.longitude - 0.01149)
@@ -77,52 +72,31 @@ extension MapViewController: GMSMapViewDelegate {
         
         fetchData(lowerLeftLatLon: newLowerLeftLatLon, upperRightLatLon: newUpperRightLatLon)
     }
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        guard let mapMarker = marker as? MapMarker else { return false }
-        let mapElement = mapMarker.mapElement
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        guard let mapMarker = marker as? MapMarker else { return }
         
-        // Set navigation bar title to the name of the marker
-        self.navigationItem.title = mapElement.name
-        
-        // Create an instance of InfoView
-        let infoView = InfoView(mapElement: mapElement)
-        view.addSubview(infoView)
-        
-        // Set up InfoView constraints
-        infoView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            infoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-        ])
-        
-        // Add a button to open the location in Google Maps
-        let openInGoogleMapsButton = UIButton(type: .system)
-        openInGoogleMapsButton.setTitle("Open in Google Maps", for: .normal)
-        openInGoogleMapsButton.addTarget(self, action: #selector(openInGoogleMaps), for: .touchUpInside)
-        openInGoogleMapsButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(openInGoogleMapsButton)
-        
-        // Set up the button constraints
-        NSLayoutConstraint.activate([
-            openInGoogleMapsButton.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 16),
+        let alertController = UIAlertController(title: "Abrir en Mapas", message: "¿Desea abrir la ubicación en Mapas?", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            let location = CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude)
             
-            openInGoogleMapsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-        
-        return true
-    }
-    
-    @objc private func openInGoogleMaps() {
-        guard let selectedMarker = mapView.selectedMarker as? MapMarker else { return }
-        let mapElement = selectedMarker.mapElement
-        
-        if let lat = mapElement.lat, let lon = mapElement.lon {
-            if let url = URL(string: "comgooglemaps://?q=\(lat),\(lon)&zoom=16") {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
+            let regionDistance: CLLocationDistance = 700
+            let regionSpan = MKCoordinateRegion(center: location, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+                MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+            ]
+            let placemark = MKPlacemark(coordinate: location, addressDictionary: nil)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = mapMarker.title
+            mapItem.openInMaps(launchOptions: options)
         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
 }

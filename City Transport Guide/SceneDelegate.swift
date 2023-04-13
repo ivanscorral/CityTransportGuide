@@ -25,7 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let initialViewController = InitialViewController(viewModel: initialViewModel)
         // Create a UINavigationController with InitialViewController as the root view controller
         let navigationController = UINavigationController(rootViewController: initialViewController)
-        
+        let backButtonImage = UIImage(named: "back-arrow")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0))
+        UINavigationBar.appearance().backIndicatorImage = backButtonImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backButtonImage
+
+        // Loop through all view controllers in the navigation stack and set the back button item
+        for viewController in navigationController.viewControllers {
+            viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Atrás", style: .plain, target: nil, action: nil)
+        }
+
         // Set the UINavigationController as the root view controller for the UIWindow
         window?.rootViewController = navigationController
         // Make the UIWindow key and visible

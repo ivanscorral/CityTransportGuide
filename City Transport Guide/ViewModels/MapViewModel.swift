@@ -10,7 +10,7 @@ import CoreLocation
 import GoogleMaps
 
 class MapViewModel {
-    private var displayedMarkers: [MapMarker] = []
+    var displayedMarkers: [MapMarker] = []
     
     func getResources(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D, completion: @escaping (Result<[MapElement], Error>) -> Void) {
         APIManager.shared.getResources(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon, completion: completion)
@@ -28,14 +28,21 @@ class MapViewModel {
     func addMarkerWithAnimation(mapElement: MapElement, mapView: GMSMapView) {
         DispatchQueue.main.async {
             CATransaction.begin()
-            CATransaction.setAnimationDuration(0.75)
-            
-            let markerPosition = CLLocationCoordinate2D(latitude: mapElement.y, longitude: mapElement.x)
-            
+            CATransaction.setAnimationDuration(1.35)
+                        
             if !self.displayedMarkers.contains(where: { $0.mapElement.id == mapElement.id }) {
                 let marker = MapMarker(mapElement: mapElement)
                 marker.opacity = 0 // Set initial opacity to 0
                 marker.map = mapView
+                // Set the snippet for the marker
+                var snippetText = mapElement.markerDescription
+                let regexPattern = "\\d+:M\\d+"
+                
+                if let _ = mapElement.id.range(of: regexPattern, options: .regularExpression) {
+                    snippetText = snippetText == "" ? "Estación de Metro" : "Estación de Metro\n\(snippetText)"
+                }
+                marker.title = mapElement.markerTitle
+                marker.snippet = snippetText
                 
                 // Animate the marker opacity to 1 (fade-in effect)
                 CATransaction.setCompletionBlock {
@@ -48,4 +55,7 @@ class MapViewModel {
             CATransaction.commit()
         }
     }
+
+
+
 }
