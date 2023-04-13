@@ -8,6 +8,8 @@
 //   let mapElements = try? JSONDecoder().decode(MapElements.self, from: jsonData)
 
 import Foundation
+import UIKit
+import Kingfisher
 
 // MARK: - MapElement
 struct MapElement: Codable {
@@ -37,6 +39,21 @@ struct MapElement: Codable {
         }
         return title
     }
+    var markerImage: UIImage? {
+        var imageName = "" // Default image name
+        if let resourceType = resourceType, resourceType.rawValue == "MOPED" {
+            imageName = "scooter"
+        } else if let idRange = id.range(of: "\\d+:M\\d+", options: .regularExpression) {
+            // Matches a Metro station ID pattern
+            imageName = "metro"
+        }else if let station = station, station {
+            imageName = "bicycle"
+        }
+        return UIImage(named: imageName)?.kf.resize(to: CGSize(width: 36, height: 36))
+    }
+    
+     
+
     
     let id, name: String
     let x, y: Double

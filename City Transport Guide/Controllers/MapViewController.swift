@@ -10,31 +10,31 @@ import MapKit
 
 class MapViewController: UIViewController {
     private var mapView: GMSMapView!
-    private var viewModel: MapViewModel!
+    private let viewModel = MapViewModel()
     let lisboaLatitude = 38.725299
     let lisboaLongitude = -9.150036
     let initialLowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096) // Coordenadas indicadas en el test
     let initialUpperRightLatLon = CLLocationCoordinate2D(latitude: 38.739429, longitude: -9.137115)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = MapViewModel()
+        
         setupMapView()
         fetchData(lowerLeftLatLon: initialLowerLeftLatLon, upperRightLatLon: initialUpperRightLatLon)
     }
     
     private func setupMapView() {
-        
         let camera = GMSCameraPosition.camera(withLatitude: lisboaLatitude, longitude: lisboaLongitude, zoom: 17.4)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.delegate = self
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.settings.compassButton = true
-        mapView.setMinZoom(15.75, maxZoom: 18.5) // Limit zoom inoutrange
+        mapView.setMinZoom(14, maxZoom: 18.9) // Limit zoom inoutrange
         view.addSubview(mapView)
     }
     
     func fetchData(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D) {
-        viewModel.getResources(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
+        viewModel.fetchData(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -67,11 +67,12 @@ class MapViewController: UIViewController {
 }
 extension MapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-        let newLowerLeftLatLon = CLLocationCoordinate2D(latitude: position.target.latitude - 0.014191, longitude: position.target.longitude - 0.01149)
-        let newUpperRightLatLon = CLLocationCoordinate2D(latitude: position.target.latitude + 0.014191, longitude: position.target.longitude + 0.01149)
+        let newLowerLeftLatLon = CLLocationCoordinate2D(latitude: position.target.latitude - 0.0075, longitude: position.target.longitude - 0.0065)
+        let newUpperRightLatLon = CLLocationCoordinate2D(latitude: position.target.latitude + 0.0075, longitude: position.target.longitude + 0.0065)
         
         fetchData(lowerLeftLatLon: newLowerLeftLatLon, upperRightLatLon: newUpperRightLatLon)
     }
+    
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         guard let mapMarker = marker as? MapMarker else { return }
         
@@ -99,4 +100,12 @@ extension MapViewController: GMSMapViewDelegate {
         present(alertController, animated: true, completion: nil)
     }
     
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        if position.zoom < 14.1 {
+            mapView.animate(toZoom: 14.55)
+        }
+        else if position.zoom > 18.35 {
+            mapView.animate(toZoom: 18.35)
+        }
+    }
 }

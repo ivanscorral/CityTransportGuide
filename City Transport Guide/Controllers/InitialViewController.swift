@@ -42,15 +42,17 @@ class InitialViewController: UIViewController {
     private lazy var exploreButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Explorar transportes", for: .normal)
-        button.setTitleColor(.white, for: .normal) // Set font color to white
-        button.backgroundColor = UIColor.darkGray // Set background color to dark gray
+        button.setTitleColor(UIColor(white: 0.9, alpha: 1), for: .normal) // Set font color to greyish white
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22) // Set font to bold and size to 24
+        button.backgroundColor = UIColor(hex: "#ffad33") // Set background color to #ffad33
+        
         button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20) // Add padding to the text
-        button.layer.cornerRadius = 5 // Add corner radius for a better appearance
+        button.layer.cornerRadius = 9 // Add corner radius for a better appearance
         button.addTarget(self, action: #selector(exploreButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     // MARK: UI Set-Up
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,11 +89,16 @@ class InitialViewController: UIViewController {
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // Setup constraints for exploreButton
-        NSLayoutConstraint.activate([
-            exploreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            exploreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
-        ])
+            
+        let newWidth = 280.0
+        let newHeight = 70.0
+            
+            NSLayoutConstraint.activate([
+                exploreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                exploreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+                exploreButton.widthAnchor.constraint(equalToConstant: newWidth),
+                exploreButton.heightAnchor.constraint(equalToConstant: newHeight)
+            ])
         
         // Setup constraints for subtitleLabel
         NSLayoutConstraint.activate([
@@ -104,5 +111,25 @@ class InitialViewController: UIViewController {
     @objc private func exploreButtonTapped() {
         let mapViewController = MapViewController()
         navigationController?.pushViewController(mapViewController, animated: true)
+    }
+}
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.currentIndex = hex.hasPrefix("#") ? hex.index(after: hex.startIndex) : hex.startIndex
+        
+        var rgbValue: UInt64 = 0
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0x00ff00) >> 8
+        let b = (rgbValue & 0x0000ff)
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff,
+            alpha: 1
+        )
     }
 }
