@@ -26,6 +26,8 @@
 		0D66216029E628C100C51043 /* TransportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66215F29E628C100C51043 /* TransportView.swift */; };
 		0D72C4FB29E77E8F00EAB742 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72C4FA29E77E8F00EAB742 /* InfoView.swift */; };
 		0D72C4FD29E77FC500EAB742 /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72C4FC29E77FC500EAB742 /* ErrorDetails.swift */; };
+		0D72C4FF29E78CEA00EAB742 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72C4FE29E78CEA00EAB742 /* MapViewModel.swift */; };
+		0D72C50229E78D1A00EAB742 /* GMSMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D72C50129E78D1A00EAB742 /* GMSMapView.swift */; };
 		0DFDC23A29E6406400ABD84E /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFDC23929E6406400ABD84E /* APIManager.swift */; };
 		0DFDC23C29E70A0300ABD84E /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFDC23B29E70A0300ABD84E /* InitialViewController.swift */; };
 		51405B11D4F6C17B246FC53C /* Pods_City_Transport_Guide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E21467DC75BEF92C1D960C /* Pods_City_Transport_Guide.framework */; };
@@ -53,6 +55,8 @@
 		0D66215F29E628C100C51043 /* TransportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportView.swift; sourceTree = "<group>"; };
 		0D72C4FA29E77E8F00EAB742 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		0D72C4FC29E77FC500EAB742 /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
+		0D72C4FE29E78CEA00EAB742 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		0D72C50129E78D1A00EAB742 /* GMSMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMSMapView.swift; sourceTree = "<group>"; };
 		0DFDC23929E6406400ABD84E /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0DFDC23B29E70A0300ABD84E /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		1E6E7BD44DE9552E59A50A6A /* Pods-City Transport Guide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-City Transport Guide.release.xcconfig"; path = "Target Support Files/Pods-City Transport Guide/Pods-City Transport Guide.release.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 		0D66213329E6267E00C51043 /* City Transport Guide */ = {
 			isa = PBXGroup;
 			children = (
+				0D72C50029E78CF800EAB742 /* Extensions */,
 				0D66215129E627FE00C51043 /* Views */,
 				0D66215029E627B200C51043 /* Networking */,
 				0D66214F29E627A000C51043 /* Controllers */,
@@ -136,6 +141,7 @@
 			children = (
 				0D66215929E6287C00C51043 /* TransportViewModel.swift */,
 				0D00661429E70B0700A0A316 /* InitialViewModel.swift */,
+				0D72C4FE29E78CEA00EAB742 /* MapViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -165,6 +171,14 @@
 				0D72C4FA29E77E8F00EAB742 /* InfoView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0D72C50029E78CF800EAB742 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0D72C50129E78D1A00EAB742 /* GMSMapView.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		3DEBE4959FE6E32A605F36E4 /* Frameworks */ = {
@@ -328,10 +342,12 @@
 				0D66215429E6284200C51043 /* Transport.swift in Sources */,
 				0D66215A29E6287C00C51043 /* TransportViewModel.swift in Sources */,
 				0D66215E29E628A100C51043 /* Extensions.swift in Sources */,
+				0D72C4FF29E78CEA00EAB742 /* MapViewModel.swift in Sources */,
 				0D66213529E6267E00C51043 /* AppDelegate.swift in Sources */,
 				0D00661929E7169100A0A316 /* MapMarker.swift in Sources */,
 				0D66213729E6267E00C51043 /* SceneDelegate.swift in Sources */,
 				0D66215829E6286C00C51043 /* MapViewController.swift in Sources */,
+				0D72C50229E78D1A00EAB742 /* GMSMapView.swift in Sources */,
 				0D66216029E628C100C51043 /* TransportView.swift in Sources */,
 				0D66215C29E6289400C51043 /* Constants.swift in Sources */,
 				0D00661729E7109200A0A316 /* MapElements.swift in Sources */,

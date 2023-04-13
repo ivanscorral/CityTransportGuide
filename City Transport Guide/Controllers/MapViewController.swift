@@ -9,10 +9,11 @@ import GoogleMaps
 
 class MapViewController: UIViewController {
     private var mapView: GMSMapView!
-    private var displayedMarkers: [MapMarker] = []
+    private var viewModel: MapViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = MapViewModel()
         setupMapView()
         let lowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096) // Ini
         let upperRightLatLon = CLLocationCoordinate2D(latitude: 38.739429, longitude: -9.137115)
@@ -26,55 +27,23 @@ class MapViewController: UIViewController {
         
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.settings.myLocationButton = true
         mapView.settings.compassButton = true
-        mapView.isMyLocationEnabled = true
         mapView.delegate = self
         mapView.setMinZoom(12, maxZoom: 17.5) // Limit zoom inoutrange
         view.addSubview(mapView)
     }
     
-    func addMarkerWithAnimation(mapElement: MapElement) {
-        DispatchQueue.main.async {
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(0.75)
-            
-            let markerPosition = CLLocationCoordinate2D(latitude: mapElement.y, longitude: mapElement.x)
-            
-            if !self.displayedMarkers.contains(where: { $0.mapElement.id == mapElement.id }) {
-                let marker = MapMarker(mapElement: mapElement)
-                marker.opacity = 0 // Set initial opacity to 0
-                marker.map = self.mapView
-                
-                // Animate the marker opacity to 1 (fade-in effect)
-                CATransaction.setCompletionBlock {
-                    marker.opacity = 1
-                }
-                
-                self.displayedMarkers.append(marker)
-            }
-            
-            CATransaction.commit()
-        }
-    }
-    
     
     func fetchData(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D) {
-        APIManager.shared.getResources(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
+        viewModel.getResources(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let mapElements):
-                self.displayedMarkers = self.displayedMarkers.filter { marker in
-                    if !self.mapView.projection.contains(marker.position) {
-                        marker.map = nil
-                        return false
-                    }
-                    return true
-                }
+                self.viewModel.updateDisplayedMarkers(mapView: self.mapView)
                 
                 mapElements.forEach { mapElement in
-                    self.addMarkerWithAnimation(mapElement: mapElement)
+                    self.viewModel.addMarkerWithAnimation(mapElement: mapElement, mapView: self.mapView)
                 }
                 
             case .failure(let error):
@@ -82,11 +51,14 @@ class MapViewController: UIViewController {
                     let errorMessage = "Estamos experimentando problemas con el servidor. Por favor, inténtelo más tarde. (Error \(errorDetail.id))"
                     self.displayErrorAlert(errorMessage: errorMessage)
                 } else {
-                    print("Error: \(error)")
+                    self.displayErrorAlert(errorMessage: "\(error.localizedDescription), Error: \(error.asAFError?.responseCode ?? -1)")
+                    print()
                 }
             }
         }
     }
+    
+    
     func displayErrorAlert(errorMessage: String) {
         let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
@@ -95,7 +67,7 @@ class MapViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
-
+    
 }
 
 extension MapViewController: GMSMapViewDelegate {
