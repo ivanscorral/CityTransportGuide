@@ -17,10 +17,6 @@ City Transport Guide is an iOS application that helps users explore the public t
 - Handles API error responses and displays alerts to the user
 - Uses the MVVM architectural pattern
 
-## Getting Started
-
-These instructions will help you set up the project on your local machine for development and testing purposes.
-
     
 ## Screenshots
 
