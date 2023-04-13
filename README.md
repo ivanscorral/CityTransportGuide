@@ -57,6 +57,14 @@ No contributions will be merged and will be automatically denied as this is a pe
 
 - Ivan Sanchez
 
+## Contributing
+
+No contributions will be merged and will be automatically denied as this is a personal project. However, feel free to fork the project making sure to respect the terms detailed in the `LICENSE.md`
+
+## Authors
+
+- Ivan Sanchez
+
 ## License
 
 This project is licensed under the **MIT License** - see the `LICENSE.md` file for details.
