@@ -24,12 +24,9 @@ These instructions will help you set up the project on your local machine for de
     
 ## Screenshots
 
-<div style="style="margin: 0 auto">
 <img src="https://user-images.githubusercontent.com/17148950/231614044-67fc83e2-1ca7-44bb-b394-668af564188c.png" alt="Launch screen:
-" width="444" height="941" ></img> 
-<img src="https://user-images.githubusercontent.com/17148950/231613998-03a737fe-9a45-420d-9af2-b1c6b59f2610.png" alt="Error handling: 
-" width="444" height="941" ></img>
-</div>
+" width="317" height="688" ></img>            <img src="https://user-images.githubusercontent.com/17148950/231613998-03a737fe-9a45-420d-9af2-b1c6b59f2610.png" alt="Error handling: 
+" width="317" height="688" ></img>
 
 
 ## How to install  🚧 WIP 🚧
