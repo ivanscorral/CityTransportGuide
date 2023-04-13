@@ -13,5 +13,6 @@ target 'City Transport Guide' do
   # Pods for City Transport Guide
 
   pod 'GoogleMaps'
-
+  pod 'Alamofire'
+  pod 'Kingfisher'
 end
