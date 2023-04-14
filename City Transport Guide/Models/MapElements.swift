@@ -91,4 +91,37 @@ enum ResourceType: String, Codable {
     case moped = "MOPED"
 }
 
+// For tests
+
+extension MapElement {
+    init(id: String, name: String, x: Double, y: Double, companyZoneID: Int) {
+        self.init(
+            id: id,
+            name: name,
+            x: x,
+            y: y,
+            scheduledArrival: nil,
+            locationType: nil,
+            taxable: false,
+            companyZoneID: companyZoneID,
+            lat: nil,
+            lon: nil,
+            licencePlate: nil,
+            range: nil,
+            helmets: nil,
+            resourceImageID: nil,
+            resourceURL: nil,
+            resourcesImagesUrls: nil,
+            realTimeData: nil,
+            resourceType: nil,
+            station: nil,
+            availableResources: nil,
+            spacesAvailable: nil,
+            allowDropoff: nil,
+            bikesAvailable: nil
+        )
+    }
+}
+
+
 typealias MapElements = [MapElement]

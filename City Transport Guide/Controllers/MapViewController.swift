@@ -23,6 +23,54 @@ class MapViewController: UIViewController {
         fetchData(lowerLeftLatLon: initialLowerLeftLatLon, upperRightLatLon: initialUpperRightLatLon)
     }
     
+    func updateDisplayedMarkers(mapView: GMSMapView) {
+        viewModel.displayedMarkers = viewModel.displayedMarkers.filter { marker in
+            if !mapView.projection.contains(marker.position) {
+                marker.map = nil
+                return false
+            }
+            return true
+        }
+    }
+    
+    func addMarkerWithAnimation(mapElement: MapElement, mapView: GMSMapView) {
+        DispatchQueue.main.async {
+            //Animate markers showing to add smoothness to the transitions
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(1.35)
+                        
+            if !self.viewModel.displayedMarkers.contains(where: { $0.mapElement.id == mapElement.id }) {
+                let marker = MapMarker(mapElement: mapElement)
+                marker.icon = mapElement.markerImage
+                marker.opacity = 0 // Set initial opacity to 0
+                marker.map = mapView
+                // Set the snippet for the marker
+                var snippetText = mapElement.markerDescription
+                let regexPattern = "\\d+:M\\d+"
+                
+                // Check the regex on the mapElement Id to identify metro stations
+                
+                if let _ = mapElement.id.range(of: regexPattern, options: .regularExpression) {
+                    // Set the appropiate line break text depending on snippetText's content
+                    snippetText = snippetText != "" ? "Estación de Metro\n\(snippetText)" : "Estación de Metro"
+                }
+                // Set the title (computed variable)
+                marker.title = mapElement.markerTitle
+                // Set our modified snippet or description
+                marker.snippet = snippetText
+                
+                // Animate the marker opacity to 1 (fade-in effect)
+                CATransaction.setCompletionBlock {
+                    marker.opacity = 1
+                }
+                
+                self.viewModel.displayedMarkers.append(marker)
+            }
+            
+            CATransaction.commit()
+        }
+    }
+    
     private func setupMapView() {
         let camera = GMSCameraPosition.camera(withLatitude: lisboaLatitude, longitude: lisboaLongitude, zoom: 17.4)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
@@ -39,10 +87,10 @@ class MapViewController: UIViewController {
             
             switch result {
             case .success(let mapElements):
-                self.viewModel.updateDisplayedMarkers(mapView: self.mapView)
+                self.updateDisplayedMarkers(mapView: self.mapView)
                 
                 mapElements.forEach { mapElement in
-                    self.viewModel.addMarkerWithAnimation(mapElement: mapElement, mapView: self.mapView)
+                    self.addMarkerWithAnimation(mapElement: mapElement, mapView: self.mapView)
                 }
                 
             case .failure(let error):
@@ -88,7 +136,7 @@ extension MapViewController: GMSMapViewDelegate {
             ]
             let placemark = MKPlacemark(coordinate: location, addressDictionary: nil)
             let mapItem = MKMapItem(placemark: placemark)
-            mapItem.name = mapMarker.title
+            mapItem.name = "\(mapMarker.title ?? "") \(mapMarker.mapElement.resourceType?.rawValue == "MOPED" ? " - \(mapMarker.mapElement.licencePlate ?? "")" : "" )"
             mapItem.openInMaps(launchOptions: options)
         }
         

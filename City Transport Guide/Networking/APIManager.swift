@@ -8,7 +8,12 @@ import Foundation
 import Alamofire
 import CoreLocation
 
-class APIManager {
+protocol APIManagerProtocol {
+    func getResources(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D, completion: @escaping (Result<[MapElement], Error>) -> Void)
+}
+
+
+class APIManager: APIManagerProtocol {
     static let shared = APIManager()
     private init() {}
 
