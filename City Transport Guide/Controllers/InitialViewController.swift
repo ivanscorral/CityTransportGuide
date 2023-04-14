@@ -32,27 +32,45 @@ class InitialViewController: UIViewController {
     }()
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Vista de Lisboa"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold) // Increase font size
+        label.text = "Visita Lisboa"
+        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 23, weight: .medium) // Set font size to 20
+        label.backgroundColor = .clear // Set the background color of the label to clear
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+    private lazy var subtitleBackgroundView: UIView = {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear // Set the background color to clear
+        backgroundView.layer.cornerRadius = 6 // Set corner radius to 8
+        backgroundView.layer.borderWidth = 1 // Set border width
+        backgroundView.layer.borderColor = UIColor.lightGray.cgColor // Set border color
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        return backgroundView
+    }()
+
     private lazy var exploreButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Explorar transportes", for: .normal)
-        button.setTitleColor(UIColor(white: 0.9, alpha: 1), for: .normal) // Set font color to greyish white
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22) // Set font to bold and size to 24
-        button.backgroundColor = UIColor(hex: "#ffad33") // Set background color to #ffad33
         
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20) // Add padding to the text
-        button.layer.cornerRadius = 9 // Add corner radius for a better appearance
+        let buttonTitle = "Explorar transportes"
+        let attributedTitle = NSAttributedString(string: buttonTitle,
+                                                 attributes: [
+                                                    .font: UIFont.boldSystemFont(ofSize: 21.5),
+                                                    .foregroundColor: UIColor(white: 0.9, alpha: 1)
+                                                 ])
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20) // Set padding to 20
+        button.layer.cornerRadius = 12.0 // Set corner radius to 20
+        button.tintColor = UIColor(hex: "#F2C94C")
+        button.backgroundColor = UIColor(hex: "#e68a00")
         button.addTarget(self, action: #selector(exploreButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
+    
+    
     // MARK: UI Set-Up
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +79,8 @@ class InitialViewController: UIViewController {
     
     private func setupUI() {
         view.addSubview(imageView)
-        view.addSubview(subtitleLabel)
+        view.addSubview(subtitleBackgroundView) // Add the background view first
+        view.addSubview(subtitleLabel) // Add the label on top of the background view
         view.addSubview(exploreButton)
         
         setupConstraints()
@@ -82,6 +101,7 @@ class InitialViewController: UIViewController {
     
     private func setupConstraints() {
         // Setup constraints for imageView
+        // Setup constraints for imageView
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -89,22 +109,32 @@ class InitialViewController: UIViewController {
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-            
-        let newWidth = 280.0
-        let newHeight = 70.0
-            
-            NSLayoutConstraint.activate([
-                exploreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                exploreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-                exploreButton.widthAnchor.constraint(equalToConstant: newWidth),
-                exploreButton.heightAnchor.constraint(equalToConstant: newHeight)
-            ])
+        // Setup constraints for exploreButton
+        NSLayoutConstraint.activate([
+            exploreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            exploreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            exploreButton.widthAnchor.constraint(equalToConstant: 255.0),
+            exploreButton.heightAnchor.constraint(equalToConstant: 50.0)
+        ])
         
         // Setup constraints for subtitleLabel
         NSLayoutConstraint.activate([
             subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subtitleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            subtitleLabel.centerYAnchor.constraint(equalTo: subtitleBackgroundView.centerYAnchor),
+            subtitleLabel.leadingAnchor.constraint(equalTo: subtitleBackgroundView.leadingAnchor, constant: 12),
+            subtitleLabel.trailingAnchor.constraint(equalTo: subtitleBackgroundView.trailingAnchor, constant: -12),
+            subtitleLabel.topAnchor.constraint(equalTo: subtitleBackgroundView.topAnchor, constant: 12),
+            subtitleLabel.bottomAnchor.constraint(equalTo: subtitleBackgroundView.bottomAnchor, constant: -12)
         ])
+        
+        // Setup constraints for subtitleBackgroundView
+        NSLayoutConstraint.activate([
+            subtitleBackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subtitleBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +50) // Place background view above the button
+        ])
+        
+        
+        
     }
     
     // MARK: Actions
