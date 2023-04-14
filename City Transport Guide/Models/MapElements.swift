@@ -17,43 +17,49 @@ struct MapElement: Codable {
     var markerDescription: String {
         var descriptionComponents: [String] = []
         if let resourceType = resourceType, resourceType.rawValue != "MOPED" { descriptionComponents.append("Tipo: \(resourceType.rawValue)")}
-        if let availableResources = availableResources { descriptionComponents.append("Vehiculos disponibles: \(availableResources)") }
-        if let spacesAvailable = spacesAvailable { descriptionComponents.append("Espacios disponibles \(spacesAvailable)") }
-        if let range = range { descriptionComponents.append("Autonomía: \(range) km") }
         if station != nil { descriptionComponents.append("Estación de bicis") }
+        if let spacesAvailable = spacesAvailable { descriptionComponents.append("Aparcamientos disponibles \(spacesAvailable)") }
+        if let range = range { descriptionComponents.append("Autonomía: \(range) km") }
         if let licencePlate = licencePlate { descriptionComponents.append("Matrícula: \(licencePlate)") }
         if let bikesAvailable = bikesAvailable { descriptionComponents.append("Bicis disponibles: \(bikesAvailable)" ) }
         if let helmets = helmets { descriptionComponents.append("Cascos: \(helmets)") }
-
+        
         return descriptionComponents.joined(separator: "\n")
     }
     var markerTitle : String {
         var title = name
-        if let resourceType = resourceType, resourceType.rawValue == "MOPED" {
+        let companyId = Int(self.companyZoneID)
+        
+        switch companyId {
+        case 473:
             title = "Patinete eléctrico"
-            
-        }
-        let regexPattern = "\\d+:M\\d+"
-        if let _ = id.range(of: regexPattern, options: .regularExpression) {
-            title = title.localizedCapitalized
+        case 378:
+            title = "Metro \(title.localizedCapitalized)"
+        default:
+            title = name
         }
         return title
     }
     var markerImage: UIImage? {
         var imageName = "" // Default image name
-        if let resourceType = resourceType, resourceType.rawValue == "MOPED" {
-            imageName = "scooter"
-        } else if let idRange = id.range(of: "\\d+:M\\d+", options: .regularExpression) {
-            // Matches a Metro station ID pattern
+        let companyId = Int(self.companyZoneID)
+        
+        switch companyId {
+            case 378:
             imageName = "metro"
-        }else if let station = station, station {
+            case 412:
             imageName = "bicycle"
+                case 473:
+            imageName = "scooter"
+        default:
+            imageName = ""
         }
-        return UIImage(named: imageName)?.kf.resize(to: CGSize(width: 36, height: 36))
+
+        return UIImage(named: imageName)?.kf.resize(to: CGSize(width: 32, height: 32))
     }
     
-     
-
+    
+    
     
     let id, name: String
     let x, y: Double
