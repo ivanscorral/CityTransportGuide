@@ -10,10 +10,10 @@ import Kingfisher
 
 class InitialViewController: UIViewController {
     
-    // MARK: ViewModel object
+    // MARK: - ViewModel object
     private let viewModel: InitialViewModel
     
-    // MARK: Initializers
+    // MARK: - Initializers
     init(viewModel: InitialViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -23,45 +23,50 @@ class InitialViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: UIViewController SubViews
+    // MARK: - UIViewController SubViews
+    
+    // Image view for the background
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    // Subtitle label
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Visita Lisboa"
         label.textColor = .darkGray
-        label.font = UIFont.systemFont(ofSize: 23, weight: .medium) // Set font size to 20
-        label.backgroundColor = .clear // Set the background color of the label to clear
+        label.font = UIFont.systemFont(ofSize: 23, weight: .medium)
+        label.backgroundColor = .clear
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // Subtitle background view
     private lazy var subtitleBackgroundView: UIView = {
         let backgroundView = UIView()
-        backgroundView.backgroundColor = .clear // Set the background color to clear
-        backgroundView.layer.cornerRadius = 6 // Set corner radius to 8
-        backgroundView.layer.borderWidth = 1 // Set border width
-        backgroundView.layer.borderColor = UIColor.lightGray.cgColor // Set border color
+        backgroundView.backgroundColor = .clear
+        backgroundView.layer.cornerRadius = 6
+        backgroundView.layer.borderWidth = 1
+        backgroundView.layer.borderColor = UIColor.lightGray.cgColor
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         return backgroundView
     }()
-
+    
+    // Explore button
     private lazy var exploreButton: UIButton = {
         let button = UIButton(type: .system)
-        
         let buttonTitle = "Explorar transportes"
         let attributedTitle = NSAttributedString(string: buttonTitle,
                                                  attributes: [
                                                     .font: UIFont.boldSystemFont(ofSize: 21.5),
                                                     .foregroundColor: UIColor(white: 0.9, alpha: 1)
                                                  ])
-        
         button.setAttributedTitle(attributedTitle, for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20) // Set padding to 20
-        button.layer.cornerRadius = 12.0 // Set corner radius to 20
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        button.layer.cornerRadius = 12.0
         button.tintColor = UIColor(hex: "#F2C94C")
         button.backgroundColor = UIColor(hex: "#e68a00")
         button.addTarget(self, action: #selector(exploreButtonTapped), for: .touchUpInside)
@@ -69,18 +74,17 @@ class InitialViewController: UIViewController {
         return button
     }()
     
-    
-    
-    // MARK: UI Set-Up
+    // MARK: - UI Set-Up
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
+    // Setup UI elements and constraints
     private func setupUI() {
         view.addSubview(imageView)
-        view.addSubview(subtitleBackgroundView) // Add the background view first
-        view.addSubview(subtitleLabel) // Add the label on top of the background view
+        view.addSubview(subtitleBackgroundView)
+        view.addSubview(subtitleLabel)
         view.addSubview(exploreButton)
         
         setupConstraints()
@@ -109,7 +113,7 @@ class InitialViewController: UIViewController {
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // Setup constraints for exploreButton
+        // ExploreButton constraints
         NSLayoutConstraint.activate([
             exploreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             exploreButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
@@ -117,7 +121,7 @@ class InitialViewController: UIViewController {
             exploreButton.heightAnchor.constraint(equalToConstant: 50.0)
         ])
         
-        // Setup constraints for subtitleLabel
+        // SubtitleLabel constraints
         NSLayoutConstraint.activate([
             subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             subtitleLabel.centerYAnchor.constraint(equalTo: subtitleBackgroundView.centerYAnchor),
@@ -127,39 +131,18 @@ class InitialViewController: UIViewController {
             subtitleLabel.bottomAnchor.constraint(equalTo: subtitleBackgroundView.bottomAnchor, constant: -12)
         ])
         
-        // Setup constraints for subtitleBackgroundView
+        // SubtitleBackgroundView constraints
         NSLayoutConstraint.activate([
             subtitleBackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subtitleBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +50) // Place background view above the button
+            subtitleBackgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: +50)
         ])
-        
-        
-        
     }
     
-    // MARK: Actions
+    // MARK: - Actions
+    
+    // Action when explore button is tapped
     @objc private func exploreButtonTapped() {
-        let mapViewController = MapViewController()
+        let mapViewController = viewModel.navigateToMapViewController()
         navigationController?.pushViewController(mapViewController, animated: true)
-    }
-}
-extension UIColor {
-    convenience init(hex: String) {
-        let scanner = Scanner(string: hex)
-        scanner.currentIndex = hex.hasPrefix("#") ? hex.index(after: hex.startIndex) : hex.startIndex
-        
-        var rgbValue: UInt64 = 0
-        scanner.scanHexInt64(&rgbValue)
-        
-        let r = (rgbValue & 0xff0000) >> 16
-        let g = (rgbValue & 0x00ff00) >> 8
-        let b = (rgbValue & 0x0000ff)
-        
-        self.init(
-            red: CGFloat(r) / 0xff,
-            green: CGFloat(g) / 0xff,
-            blue: CGFloat(b) / 0xff,
-            alpha: 1
-        )
     }
 }

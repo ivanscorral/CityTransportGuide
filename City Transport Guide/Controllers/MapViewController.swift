@@ -9,13 +9,15 @@ import GoogleMaps
 import MapKit
 
 class MapViewController: UIViewController {
+    // MARK: - Properties
     private var mapView: GMSMapView!
     private let viewModel = MapViewModel()
     let lisboaLatitude = 38.725299
     let lisboaLongitude = -9.150036
-    let initialLowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096) // Coordenadas indicadas en el test
+    let initialLowerLeftLatLon = CLLocationCoordinate2D(latitude: 38.711046, longitude: -9.160096)
     let initialUpperRightLatLon = CLLocationCoordinate2D(latitude: 38.739429, longitude: -9.137115)
     
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,65 +25,18 @@ class MapViewController: UIViewController {
         fetchData(lowerLeftLatLon: initialLowerLeftLatLon, upperRightLatLon: initialUpperRightLatLon)
     }
     
-    func updateDisplayedMarkers(mapView: GMSMapView) {
-        viewModel.displayedMarkers = viewModel.displayedMarkers.filter { marker in
-            if !mapView.projection.contains(marker.position) {
-                marker.map = nil
-                return false
-            }
-            return true
-        }
-    }
-    
-    func addMarkerWithAnimation(mapElement: MapElement, mapView: GMSMapView) {
-        DispatchQueue.main.async {
-            //Animate markers showing to add smoothness to the transitions
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(1.35)
-                        
-            if !self.viewModel.displayedMarkers.contains(where: { $0.mapElement.id == mapElement.id }) {
-                let marker = MapMarker(mapElement: mapElement)
-                marker.icon = mapElement.markerImage
-                marker.opacity = 0 // Set initial opacity to 0
-                marker.map = mapView
-                // Set the snippet for the marker
-                var snippetText = mapElement.markerDescription
-                let regexPattern = "\\d+:M\\d+"
-                
-                // Check the regex on the mapElement Id to identify metro stations
-                
-                if let _ = mapElement.id.range(of: regexPattern, options: .regularExpression) {
-                    // Set the appropiate line break text depending on snippetText's content
-                    snippetText = snippetText != "" ? "Estación de Metro\n\(snippetText)" : "Estación de Metro"
-                }
-                // Set the title (computed variable)
-                marker.title = mapElement.markerTitle
-                // Set our modified snippet or description
-                marker.snippet = snippetText
-                
-                // Animate the marker opacity to 1 (fade-in effect)
-                CATransaction.setCompletionBlock {
-                    marker.opacity = 1
-                }
-                
-                self.viewModel.displayedMarkers.append(marker)
-            }
-            
-            CATransaction.commit()
-        }
-    }
-    
+    // MARK: - Helper Methods
     private func setupMapView() {
         let camera = GMSCameraPosition.camera(withLatitude: lisboaLatitude, longitude: lisboaLongitude, zoom: 17.4)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.delegate = self
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.settings.compassButton = true
-        mapView.setMinZoom(14, maxZoom: 18.9) // Limit zoom inoutrange
+        mapView.setMinZoom(14, maxZoom: 18.9)
         view.addSubview(mapView)
     }
     
-    func fetchData(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D) {
+    private func fetchData(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D) {
         viewModel.fetchData(lowerLeftLatLon: lowerLeftLatLon, upperRightLatLon: upperRightLatLon) { [weak self] result in
             guard let self = self else { return }
             
@@ -104,7 +59,41 @@ class MapViewController: UIViewController {
         }
     }
     
-    func displayErrorAlert(errorMessage: String) {
+    private func updateDisplayedMarkers(mapView: GMSMapView) {
+        viewModel.displayedMarkers = viewModel.displayedMarkers.filter { marker in
+            if !mapView.projection.contains(marker.position) {
+                marker.map = nil
+                return false
+            }
+            return true
+        }
+    }
+    
+    private func addMarkerWithAnimation(mapElement: MapElement, mapView: GMSMapView) {
+        DispatchQueue.main.async {
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(1.35)
+            
+            if !self.viewModel.displayedMarkers.contains(where: { $0.mapElement.id == mapElement.id }) {
+                let marker = MapMarker(mapElement: mapElement)
+                marker.icon = mapElement.markerImage
+                marker.opacity = 0
+                marker.map = mapView
+                
+                marker.title = mapElement.markerTitle
+                marker.snippet = mapElement.markerDescription
+                
+                CATransaction.setCompletionBlock {
+                    marker.opacity = 1
+                }
+                
+                self.viewModel.displayedMarkers.append(marker)
+            }
+            
+            CATransaction.commit()
+        }
+    }
+    private func displayErrorAlert(errorMessage: String) {
         let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
@@ -113,11 +102,12 @@ class MapViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 }
+
+// MARK: - GMSMapViewDelegate
 extension MapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         let newLowerLeftLatLon = CLLocationCoordinate2D(latitude: position.target.latitude - 0.0075, longitude: position.target.longitude - 0.0065)
         let newUpperRightLatLon = CLLocationCoordinate2D(latitude: position.target.latitude + 0.0075, longitude: position.target.longitude + 0.0065)
-        
         fetchData(lowerLeftLatLon: newLowerLeftLatLon, upperRightLatLon: newUpperRightLatLon)
     }
     
@@ -157,3 +147,4 @@ extension MapViewController: GMSMapViewDelegate {
         }
     }
 }
+

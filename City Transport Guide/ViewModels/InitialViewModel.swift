@@ -13,7 +13,6 @@ class InitialViewModel {
     }
     
     func fetchImage(completion: @escaping (Result<URL, Error>) -> Void) {
-        // You can replace this URL with the one you want to use for the image
         guard let url = lisbonURL else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return

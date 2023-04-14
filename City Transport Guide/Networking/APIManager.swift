@@ -12,19 +12,28 @@ protocol APIManagerProtocol {
     func getResources(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D, completion: @escaping (Result<[MapElement], Error>) -> Void)
 }
 
-
 class APIManager: APIManagerProtocol {
     static let shared = APIManager()
     private init() {}
 
+    private let baseURL = "https://apidev.meep.me/tripplan/api/v1"
+    private let headers: HTTPHeaders = [
+        "User-Agent": "Meep/iOS/1.0.0",
+        "Accept": "application/json"
+    ]
+    
     func getResources(lowerLeftLatLon: CLLocationCoordinate2D, upperRightLatLon: CLLocationCoordinate2D, completion: @escaping (Result<[MapElement], Error>) -> Void) {
-        let urlString = "https://apidev.meep.me/tripplan/api/v1/routers/lisboa/resources?lowerLeftLatLon=\(lowerLeftLatLon.latitude),\(lowerLeftLatLon.longitude)&upperRightLatLon=\(upperRightLatLon.latitude),\(upperRightLatLon.longitude)"
-        let headers: HTTPHeaders = [
-            "User-Agent": "Meep/iOS/1.0.0",
-            "Accept": "application/json"
+        let urlString = "\(baseURL)/routers/lisboa/resources"
+        let parameters: [String: String] = [
+            "lowerLeftLatLon": "\(lowerLeftLatLon.latitude),\(lowerLeftLatLon.longitude)",
+            "upperRightLatLon": "\(upperRightLatLon.latitude),\(upperRightLatLon.longitude)"
         ]
         
-        AF.request(urlString, method: .get, headers: headers).responseData { response in
+        makeRequest(urlString: urlString, parameters: parameters, headers: headers, completion: completion)
+    }
+    
+    private func makeRequest(urlString: String, parameters: [String: String], headers: HTTPHeaders, completion: @escaping (Result<[MapElement], Error>) -> Void) {
+        AF.request(urlString, method: .get, parameters: parameters, headers: headers).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
