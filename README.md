@@ -30,7 +30,7 @@ City Transport Guide is an iOS application that helps users explore the public t
 <img src="https://user-images.githubusercontent.com/17148950/232101992-0562ed8d-a636-452b-95bb-093d096288ec.png" alt="Confirmation to open maps" width="317" height="688"> </img>
 <img src="https://user-images.githubusercontent.com/17148950/231613998-03a737fe-9a45-420d-9af2-b1c6b59f2610.png" alt="Error handling: " width="317" height="688" > </img>
 <img src="https://i.ibb.co/JyrjV81/IMG-1516.png" alt="3D Lanscape View" width="688" height="317" > </img>
-
+<img src="https://i.ibb.co/H2QSFWC/Captura-2023-04-15-a-las-22-04-05.png" width="317" height="688" > </img>
 ## How to install  
 
 * Clone the repository
