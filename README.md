@@ -12,6 +12,7 @@ City Transport Guide is an iOS application that helps users explore the public t
 - Display an info window with the name and a short description of the resource when a marker is tapped.
 - Open the native Maps app with the selected location when the info window is tapped.
 - Handle errors gracefully by showing an error alert with relevant information.
+- Added automated Github workflow automation.
 
 ## Screenshots
 
