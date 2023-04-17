@@ -7,19 +7,20 @@
 City Transport Guide is an iOS application that helps users explore the public transportation options in the city of Lisbon, Portugal. The app displays a map with markers for different public transport resources like buses, trains, and scooters, and provides additional information about each resource when a user taps on a marker.
 
 ## Features
+- Display a map centered on Lisbon.
+- Fetch and display markers for transportation resources (bikes, scooters, metro stations, etc.) from the provided API.
+- Show custom icons for each marker based on the companyID of the transportation resource.
+- Animate the markers when they appear on the map.
+- Update the markers on the map as the user moves around.
+- Limit the zoom level to a specific range.
+- Display an info window with the name and a short description of the resource when a marker is tapped.
+- Open the native Maps app with the selected location when the info window is tapped.
+- Handle errors gracefully by showing an error alert with relevant information.
 
-- Displays a map with public transport resources in Lisbon
-- Fetches **real-time data from the API** for the resources
-- Provides **detailed information about each resource**, including:
-  - *Name*
-  - *Coordinates*
-  - *Type of transport*
-  - *Available resources*
-  - *Other relevant parameters*
-- Allows users to **open the resource location in Google Maps**
-- **Handles API error responses** and **displays alerts to the user**
-- Uses the **MVVM architectural pattern**
-
+## Tests
+- Unit tests for the ViewModel to ensure proper data fetching and filtering.
+- Unit tests for the MapElement class to verify the correct creation of MapElements and their properties.
+- UI tests to verify that markers are displayed and updated correctly on the map, and that the info window shows the correct information.
     
 ## Screenshots
 
