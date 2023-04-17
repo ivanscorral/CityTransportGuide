@@ -1,10 +1,8 @@
 # City Transport Guide
 
-### 🚧🚧 WIP 🚧🚧
+City Transport Guide is an iOS application that helps users explore the public transportation options in the city of Lisbon, Portugal. The app displays a map with custom markers for different public transport resources like bikes, scooters, metro stations, and more. Users can tap on a marker to view additional information about each resource, and even open the native Maps app for further navigation.
 
-**This project is in Work In Progress state**
 
-City Transport Guide is an iOS application that helps users explore the public transportation options in the city of Lisbon, Portugal. The app displays a map with markers for different public transport resources like buses, trains, and scooters, and provides additional information about each resource when a user taps on a marker.
 
 ## Features
 - Display a map centered on Lisbon.
