@@ -43,7 +43,7 @@ City Transport Guide is an iOS application that helps users explore the public t
 ## Requirements
 
 * Xcode 14.3
-* iOS 16.0 or higher
+* iOS 16.4
 * Cocoapods for dependencies
 
 ## Dependencies
