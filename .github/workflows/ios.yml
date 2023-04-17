@@ -23,7 +23,7 @@ jobs:
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
-
+# Build will fail until Github Supports Xcode 14.3 and iOS 16.4
       - name: Build
         env:
           scheme: ${{ 'default' }}
