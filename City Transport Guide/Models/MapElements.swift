@@ -5,7 +5,6 @@
 //  Created by Ivan Sanchez on 12/4/23.
 //
 
-//   let mapElements = try? JSONDecoder().decode(MapElements.self, from: jsonData)
 
 import Foundation
 import UIKit
