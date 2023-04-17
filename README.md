@@ -1,5 +1,10 @@
 # City Transport Guide
 
+## Workflow status
+[![iOS starter workflow](https://github.com/ivanscorral/CityTransportGuide/actions/workflows/ios.yml/badge.svg)](https://github.com/ivanscorral/CityTransportGuide/actions/workflows/ios.yml)
+
+*Note: GitHub does not yet support Xcode 14.3 and iOS 16.4 so this project will keep failing builds until they add support*
+
 City Transport Guide is an iOS application that helps users explore the public transportation options in the city of Lisbon, Portugal. The app displays a map with custom markers for different public transport resources like bikes, scooters, metro stations, and more. Users can tap on a marker to view additional information about each resource, and even open the native Maps app for further navigation.
 
 ## Features
