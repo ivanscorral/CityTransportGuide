@@ -20,7 +20,6 @@ City Transport Guide is an iOS application that helps users explore the public t
 ## Tests
 - Unit tests for the ViewModel to ensure proper data fetching and filtering.
 - Unit tests for the MapElement class to verify the correct creation of MapElements and their properties.
-- UI tests to verify that markers are displayed and updated correctly on the map, and that the info window shows the correct information.
     
 ## Screenshots
 
