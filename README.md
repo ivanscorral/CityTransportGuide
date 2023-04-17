@@ -2,8 +2,6 @@
 
 City Transport Guide is an iOS application that helps users explore the public transportation options in the city of Lisbon, Portugal. The app displays a map with custom markers for different public transport resources like bikes, scooters, metro stations, and more. Users can tap on a marker to view additional information about each resource, and even open the native Maps app for further navigation.
 
-
-
 ## Features
 - Display a map centered on Lisbon.
 - Fetch and display markers for transportation resources (bikes, scooters, metro stations, etc.) from the provided API.
@@ -15,10 +13,6 @@ City Transport Guide is an iOS application that helps users explore the public t
 - Open the native Maps app with the selected location when the info window is tapped.
 - Handle errors gracefully by showing an error alert with relevant information.
 
-## Tests
-- Unit tests for the ViewModel to ensure proper data fetching and filtering.
-- Unit tests for the MapElement class to verify the correct creation of MapElements and their properties.
-    
 ## Screenshots
 
 <img src="https://user-images.githubusercontent.com/17148950/232102301-29e9813f-3b64-4f44-94b8-bb5b06ff2503.png" alt="Launch screen:" width="317" height="688" ></img>
@@ -37,6 +31,11 @@ City Transport Guide is an iOS application that helps users explore the public t
 * Open the newly generated **.xcworkspace** file.
 * **Enter your API key in the Info.plist**
 * Build and run the app
+
+## Tests
+- Unit tests for the ViewModel to ensure proper data fetching and filtering.
+- Unit tests for the MapElement class to verify the correct creation of MapElements and their properties.
+    
     
 ## Requirements
 
