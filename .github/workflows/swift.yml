@@ -1,0 +1,26 @@
+# This workflow will build and test a Swift project with CocoaPods
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Swift
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: macos-12.1
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Xcode 14.3
+      run: sudo xcode-select -switch /Applications/Xcode_14.3.app/Contents/Developer
+    - name: Install dependencies
+      run: pod install --repo-update
+    - name: Build
+      run: xcodebuild -workspace CityTransportGuide.xcworkspace -scheme CityTransportGuide -sdk iphonesimulator -configuration Debug build | xcpretty
+    - name: Run tests
+      run: xcodebuild test -workspace CityTransportGuide.xcworkspace -scheme CityTransportGuide -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' | xcpretty
