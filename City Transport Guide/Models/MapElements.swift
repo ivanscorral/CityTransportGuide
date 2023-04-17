@@ -33,7 +33,7 @@ struct MapElement: Codable {
         case 473:
             title = "Patinete eléctrico"
         case 378:
-            title = "Metro \(title.localizedCapitalized)"
+            title = "Metro: \(title.localizedCapitalized)"
         default:
             title = name
         }
