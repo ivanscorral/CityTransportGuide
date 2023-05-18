@@ -23,7 +23,8 @@ jobs:
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
-# Build will fail until Github Supports Xcode 14.3 and iOS 16.4
+      - name: Set Xcode version
+        run: sudo xcode-select --switch /Applications/Xcode_14.3.app
       - name: Build
         env:
           scheme: ${{ 'default' }}
@@ -41,5 +42,4 @@ jobs:
           device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | grep -E '16\.[4-9]|1[7-9]\.|[2-9][0-9]\.' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
           if [ $scheme = default ]; then scheme=$(cat default); fi
           workspace="`ls -A | grep -i \\.xcworkspace\$`"
-          xcodebuild test-without-building -scheme "$scheme" -workspace "$workspace" -destination "platform=$platform,name=$device"
-
+          xcodebuild test-without-building -scheme "$scheme" -workspace "$workspace"
